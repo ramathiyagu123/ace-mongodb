@@ -295,7 +295,7 @@ Get the alias name from the above output
 Use that alias to run the below command:
 
 ```
-keytool -export -alias es\_cacert -file truststoreCert-mykey.crt
+keytool -export -alias es_cacert -file truststoreCert-mykey.crt
 -keystore es-cert.jks
 ```
 
@@ -311,7 +311,7 @@ Save
 generated](./myMediaFolder/media/image34.png)
 
 6\. Open setdbparms.txt and add following:
-
+leave the text "thisispwdfortruststore" as it is. That is the placeholder
 ```
 kafka::KAFKA token <api_key>
 IntSvr::truststorePass thisispwdfortruststore password
