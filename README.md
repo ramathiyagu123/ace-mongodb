@@ -100,7 +100,8 @@ generated](./myMediaFolder/media/image14.png)
 ![A picture containing screenshot Description automatically
 generated](./myMediaFolder/media/image15.png)
 
-"Failure" from kafkaProducer node should go to Trace Exceptions![A
+"Failure" from kafkaProducer node should go to Trace Exceptions!
+[A
 screenshot of a cell phone Description automatically
 generated](./myMediaFolder/media/image16.png)
 
@@ -314,8 +315,7 @@ leave the text "thisispwdfortruststore" as it is. That is the placeholder
 kafka::KAFKA token <api_key>
 IntSvr::truststorePass thisispwdfortruststore password
 ```
-[A screenshot of
-a cell phone Description automatically
+![A screenshot of a cell phone Description automatically
 generated](./myMediaFolder/media/image35.png)
 
 Copy the api\_key from the es-api-key.json and paste next to token
