@@ -243,10 +243,10 @@ docker tag ace-mongodb-connector:1.0 default-route-openshift-image-registry.apps
 docker push default-route-openshift-image-registry.apps.ocp43.vg.gse-ocp.net/ace/ace-mongodb-connector:1.0-amd64
 ```
 Create a secret to access this custom image 
-kubectl create secret docker-registry <secret-name> -u kubeadmin -p $(oc whoami -t) image-registry.openshift-image-registry.svc:5000
+kubectl create secret docker-registry <secret-name> --docker-username=$(oc whoami) --docker-password=$(oc whoami -t) --docker-server=image-registry.openshift-image-registry.svc:5000
     
 ```
-kubectl create secret docker-registry internal-reg -u $(oc whoami) -p $(oc whoami -t) image-registry.openshift-image-registry.svc:5000
+kubectl create secret docker-registry internal-reg --docker-username=$(oc whoami) --docker-password=$(oc whoami -t) --docker-server=image-registry.openshift-image-registry.svc:5000
 ```
 
 
