@@ -86,6 +86,10 @@ generated](./myMediaFolder/media/image13.png)
 
 3\. Save
 
+4\. Click on the button below to add a subflow
+![A screenshot of a cell phone Description automatically
+generated](./myMediaFolder/media/image13-2.png)
+
 4\. Add subflow and the following nodes
 
 ![A screenshot of a cell phone Description automatically
