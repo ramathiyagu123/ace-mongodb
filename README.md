@@ -298,7 +298,7 @@ Use that alias to run the below command:
 keytool -export -alias es_cacert -file truststoreCert-mykey.crt -keystore es-cert.jks
 ```
 
-![](./myMediaFolder/media/image33.png){width="6.5in" height="0.45625in"}
+![](./myMediaFolder/media/image33.png)
 
 5\. Open truststorePassword.txt in the config folder. Add your truststore password:
 
