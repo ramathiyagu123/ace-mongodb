@@ -281,8 +281,7 @@ Move the java truststore file (es-cert.jks) and api key
 
 4\. Run
 ```
-keytool -list -storetype JKS -keystore es-cert.jks -storepass password
--v
+keytool -list -storetype JKS -keystore es-cert.jks -storepass password -v
 ```
 
 To show the content of the jks file (password is password)
@@ -295,8 +294,7 @@ Get the alias name from the above output
 Use that alias to run the below command:
 
 ```
-keytool -export -alias es_cacert -file truststoreCert-mykey.crt
--keystore es-cert.jks
+keytool -export -alias es_cacert -file truststoreCert-mykey.crt -keystore es-cert.jks
 ```
 
 ![](./myMediaFolder/media/image33.png){width="6.5in" height="0.45625in"}
