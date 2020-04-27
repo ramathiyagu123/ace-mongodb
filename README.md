@@ -18,7 +18,7 @@ Steps
 
 ### 1. EventStreams
 
-1\. Click on "Create a topic" with the name \"ace\". Select 3 partitions
+1\. Click on "Create a topic" and name it \"ace\". Select 3 partitions
 and leave rest the default.
 
 ![A screenshot of a social media post Description automatically
