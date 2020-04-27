@@ -164,9 +164,10 @@ generated](./myMediaFolder/media/image24.png)
 4\. Lets change the LoopbackRequest name as Mongo and add the following
 configuration under Basic
 
-Data Source name: mongodb
+- Data Source name: mongodb
+- LoopBack Object: items
 
-LoopBack object: items
+LoopBack Object("items") is the collection name in the mongodb and data source name(mongodb) is a key that is referred in the datasources.json
 
 ![A screenshot of a cell phone Description automatically
 generated](./myMediaFolder/media/image25.png)
@@ -233,7 +234,7 @@ docker build . -t ace-mongodb-connector:1.0
 
 3\. Push your custom image on openshift 
 
-Login to OpenShift through the command line. Make sure that you are in the correct namespace/project as your deployed ACE Dashboard instance. By default in most cases the ACE Dashboard pods are usually installed in the ace namespace. In my case, I used the ace namespace. To check your current namespace use the "oc project" command. If you aren't in the correct namespace you can change this by using the "oc project ace" command as shown below. Your generated server configuration secrets need to be in the same namespace/project so that when you deploy your integration server it can actually access them.
+Login to OpenShift through the command line. Make sure that you are in the correct namespace/project as your deployed ACE Dashboard instance. By default in most cases the ACE Dashboard pods are usually installed in the ace namespace. In my case, I used the ace namespace. To check your current namespace use the "oc project" command. If you aren't in the correct namespace you can change this by using the "oc project ace" command as shown below. Your generated image pull secret and server configuration secrets (which we will generate a bit further down) need to be in the same namespace.
 
 ```
 oc project ace
@@ -309,12 +310,14 @@ Save
 ![A screenshot of a cell phone Description automatically
 generated](./myMediaFolder/media/image34.png)
 
-6\. Open setdbparms.txt and add following:
-leave the text "thisispwdfortruststore" as it is. That is the placeholder
+6\. Open setdbparms.txt and add the following:
+
 ```
 kafka::KAFKA token <api_key>
 IntSvr::truststorePass thisispwdfortruststore password
 ```
+- Make sure you keep the text "thisispwdfortruststore" exactly how it is mentioned above. The text "thisispwdfortruststore" is a placeholder. Since we are using truststore certificate we don't need to pass in username so instead we are using random text as a placeholder.
+
 ![A screenshot of a cell phone Description automatically
 generated](./myMediaFolder/media/image35.png)
 
