@@ -1,22 +1,22 @@
-#  How to connect to mongodb using loopback connector from ACE # 
+##  How to connect to mongodb using loopback connector from ACE  
 
 Use case: 
-
 1. Save JSON data from a rest api to event streams
 2. Get JSON data from event streams and save them to mongodb
 
-Overview
+In this use case, mongodb used is off-prem but you can spin up a mongo container/pod and grab those credentials and supply that to the datasources.json file. A custom ace docker image is built so we can have access to the loopback connectors (that the base ace image doesn't have access to) and the newly created local datasources json file.
 
-1.  Create a topic in Event Streams and download the certificate 
+Steps
+1.  [Create a topic in Event Streams and download the certificate](#1.-eventstreams)
+2.  [Create an ace flow](#2.-ACE-flow-in-the-toolkit)
+- 2.1 [Flow to save data to EventStreams using rest api](#2.1-Save-data-to-EventStreams)
+- 2.2 [Flow to save data from EventStreams to MongoDB](#2.2-Save-data-from-EventStreams-to-MongoDB)
+3.  [Create a custom image of ace to deploy on openshift](#3.-ACE-Custom-Image)
+4.  [Deploy the bar file on CP4I and generate a secret](#4.-Deploy-the-bar-file-on-CP4I)
+5.  [Test](#5.-Test)
 
-2.  Create an ace flow
 
-3.  Create a custom image of ace to deploy on openshift
-
-4.  Deploy the bar file on CP4I and generate a secret
-
-
-# 1. EventStreams
+### 1. EventStreams
 
 1\. Click on Create a topic with the name \"ace\". Select 3 partition
 and leave rest the default.
@@ -56,15 +56,9 @@ generated](./myMediaFolder/media/image9.png)
 
 
 
-# 2. ACE flow in the toolkit
+### 2. ACE flow in the toolkit
 
-Use case of the ace flow:
-
-I. Save data to EventStreams
-
-II\. Save data from EventStreams to MongoDB
-
-*I. Save data to EventStreams*
+#### 2.1 Save data to EventStreams
 
 1\. Create a Rest API project by clicking File -\> New -\> REST API and
 Name the project as \"Example\"
@@ -135,7 +129,7 @@ generated](./myMediaFolder/media/image19.png)
 5\. Save
 
 
-*II. Save data from EventStreams to MongoDB*
+#### 2.2 Save data from EventStreams to MongoDB
 
 1\. Right Click Flows -\> New -\> Message Flow
 
@@ -197,20 +191,9 @@ generated](./myMediaFolder/media/image28.png)
 
 
 
-# 3. ACE Custom Image
+### 3. ACE Custom Image
 
-1\. Create a Dockerfile:
-
-```
-From ibmcom/ace:latest
-RUN . /opt/ibm/ace-11/server/bin/mqsiprofile
-ENV PATH "$PATH:/opt/ibm/ace-11/common/jdk/jre/bin:/var/mqsi/extensions/11.0.0/server/bin:/var/mqsi/extensions/11.0.0/bin:/opt/ibm/ace-11/server/bin/mosquitto:/opt/ibm/ace-11/server/bin:/opt/ibm/ace-11/common/node/bin:/opt/ibm/ace-11/tools"
-ENV MQSI_WORKPATH "/var/mqsi"
-WORKDIR /var/mqsi
-RUN npm install loopback-connector-mongodb --save
-WORKDIR /home
-COPY /datasources.json /home/aceuser/ace-server/config/connectors/loopback/
-```
+1\. Create "datasources.json" and "Dockerfile" files:
 
 Here is the template for datasources.json 
 ```
@@ -228,6 +211,19 @@ Here is the template for datasources.json
 }
 ```
 
+Dockerfile
+```
+From ibmcom/ace:latest
+RUN . /opt/ibm/ace-11/server/bin/mqsiprofile
+ENV PATH "$PATH:/opt/ibm/ace-11/common/jdk/jre/bin:/var/mqsi/extensions/11.0.0/server/bin:/var/mqsi/extensions/11.0.0/bin:/opt/ibm/ace-11/server/bin/mosquitto:/opt/ibm/ace-11/server/bin:/opt/ibm/ace-11/common/node/bin:/opt/ibm/ace-11/tools"
+ENV MQSI_WORKPATH "/var/mqsi"
+WORKDIR /var/mqsi
+RUN npm install loopback-connector-mongodb --save
+WORKDIR /home
+COPY /datasources.json /home/aceuser/ace-server/config/connectors/loopback/
+```
+Make sure datasources.json and Dockerfile are in the same location
+
 2\. Run 
 ```
 docker build . -t ace-mongodb-connector:1.0
@@ -236,7 +232,7 @@ docker build . -t ace-mongodb-connector:1.0
 
 3\. Push your custom image on openshift 
 
-login to openshift
+Login to OpenShift through the command line. Make sure that you are in the correct namespace/project as your deployed ACE Dashboard instance. By default in most cases the ACE Dashboard pods are usually installed in the ace namespace. In my case, I used the ace namespace. To check your current namespace use the "oc project" command. If you aren't in the correct namespace you can change this by using the "oc project ace" command as shown below. Your generated server configuration secrets need to be in the same namespace/project so that when you deploy your integration server it can actually access them.
 
 ```
 oc project ace
@@ -249,13 +245,16 @@ docker push default-route-openshift-image-registry.apps.ocp43.vg.gse-ocp.net/ace
 ```
 Create a secret to access this custom image 
 kubectl create secret docker-registry \<secret-name\> --docker-username=$(oc whoami) --docker-password=$(oc whoami -t) --docker-server=image-registry.openshift-image-registry.svc:5000
-    
+
+For example,    
 ```
+oc project ace
+
 kubectl create secret docker-registry internal-reg --docker-username=$(oc whoami) --docker-password=$(oc whoami -t) --docker-server=image-registry.openshift-image-registry.svc:5000
 ```
 
 
-# 4. Deploy the bar file on CP4I
+### 4. Deploy the bar file on CP4I
 
 Go to your CP4I ace dashboard
 
@@ -338,18 +337,28 @@ ResourceManagers:
 ![A screenshot of a cell phone Description automatically
 generated](./myMediaFolder/media/image37.png)
 
+------------------- Important --------------------
+
 RENAME serverconf.yaml to server.conf.yaml
 
+------------------- Important --------------------
+
 8\.
+Create a secret
+- Go to openshift and copy the login command
+- Login to openshift through command line
+- Go to the "config" directory through command line
 
-Open the terminal and go the "config" directory
-
-Now go to openshift and copy the login command to log into the openshift
-through terminal
+Make sure you are in the same namespace/project as your deployed ACE Dashboard and your custom image.
 
 RUN ./generateSecrets.sh \<secret-name>
 
-Example ```./generateSecrets.sh ace-kafka-secret```
+For example,
+```
+oc project ace
+
+./generateSecrets.sh ace-kafka-secret
+```
 
 ![A screenshot of a cell phone Description automatically
 generated](./myMediaFolder/media/image38.png)
@@ -376,6 +385,8 @@ image-registry.openshift-image-registry.svc:5000/ace/ace-mongodb-connector:1.0
 ```
 Since the image is going to be pulled internally in the cluster the endpoint that should be used is image-registry.openshift-image-registry.svc:5000. The registry endpoint that we initially docker logged into and pushed to was for external use (i.e. when docker pushing into it).
 
+Again, please make sure that your custom image and your pull secret were created in the same namespace/project as your deployed ACE Dashboard instance. 
+
 Image pull secret
 ```
 internal-reg
@@ -396,7 +407,7 @@ And leave rest the same
 ![A screenshot of a computer Description automatically
 generated](./myMediaFolder/media/image42.png)
 
-# 5. Test
+### 5. Test
 
 Open the server named kafkamongodb on ace dashboard and get the URL 
 
