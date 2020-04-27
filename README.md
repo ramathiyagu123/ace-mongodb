@@ -7,8 +7,8 @@ Use case:
 In this use case, mongodb used is off-prem but you can spin up a mongo container/pod and grab those credentials and supply that to the datasources.json file. A custom ace docker image is built so we can have access to the loopback connectors (that the base ace image doesn't have access to) and the newly created local datasources json file.
 
 Steps
-1.  [Create a topic in Event Streams and download the certificate](#1.-eventstreams)
-2.  [Create an ace flow](#2.-ACE-flow-in-the-toolkit)
+1.  [Create a topic in Event Streams and download the certificate](#1-eventstreams)
+2.  [Create an ace flow](#2-ACE-flow-in-the-toolkit)
 - 2.1 [Flow to save data to EventStreams using rest api](#2.1-Save-data-to-EventStreams)
 - 2.2 [Flow to save data from EventStreams to MongoDB](#2.2-Save-data-from-EventStreams-to-MongoDB)
 3.  [Create a custom image of ace to deploy on openshift](#3.-ACE-Custom-Image)
