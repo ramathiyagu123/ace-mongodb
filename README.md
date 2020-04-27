@@ -9,11 +9,11 @@ In this use case, mongodb used is off-prem but you can spin up a mongo container
 Steps
 1.  [Create a topic in Event Streams and download the certificate](#1-eventstreams)
 2.  [Create an ace flow](#2-ACE-flow-in-the-toolkit)
-- 2.1 [Flow to save data to EventStreams using rest api](#2.1-Save-data-to-EventStreams)
-- 2.2 [Flow to save data from EventStreams to MongoDB](#2.2-Save-data-from-EventStreams-to-MongoDB)
-3.  [Create a custom image of ace to deploy on openshift](#3.-ACE-Custom-Image)
-4.  [Deploy the bar file on CP4I and generate a secret](#4.-Deploy-the-bar-file-on-CP4I)
-5.  [Test](#5.-Test)
+- 2.1 [Flow to save data to EventStreams using rest api](#21-Save-data-to-EventStreams)
+- 2.2 [Flow to save data from EventStreams to MongoDB](#22-Save-data-from-EventStreams-to-MongoDB)
+3.  [Create a custom image of ace to deploy on openshift](#3-ACE-Custom-Image)
+4.  [Deploy the bar file on CP4I and generate a secret](#4-Deploy-the-bar-file-on-CP4I)
+5.  [Test](#5-Test)
 
 
 ### 1. EventStreams
