@@ -95,7 +95,8 @@ generated](./myMediaFolder/media/image14.png)
 generated](./myMediaFolder/media/image15.png)
 
 "Failure" from kafkaProducer node should go to Trace Exceptions!
-[A
+
+![A
 screenshot of a cell phone Description automatically
 generated](./myMediaFolder/media/image16.png)
 
