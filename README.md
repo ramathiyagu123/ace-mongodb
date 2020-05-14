@@ -12,9 +12,9 @@ Steps
 - 2.1 [Flow to save data to EventStreams using rest api](#21-Save-data-to-EventStreams)
 - 2.2 [Flow to save data from EventStreams to MongoDB](#22-Save-data-from-EventStreams-to-MongoDB)
 3.  [Create a custom image of ace to deploy on openshift](#3-ACE-Custom-Image)
-- 3.1 Datasource configuration without SSL(#31-Datasource-configuration-without-SSL)
-- 3.2 Datasource configuration with SSL(#32-Datasource-configuration-with-SSL)
-- 3.3 Build and Deploy Image(#33-Build-and-Deploy-Image)
+- 3.1 [Datasource configuration without SSL](#31-Datasource-configuration-without-SSL)
+- 3.2 [Datasource configuration with SSL](#32-Datasource-configuration-with-SSL)
+- 3.3 [Build and Deploy Image](#33-Build-and-Deploy-Image)
 4.  [Deploy the bar file on CP4I and generate a secret](#4-Deploy-the-bar-file-on-CP4I)
 5.  [Test](#5-Test)
 
