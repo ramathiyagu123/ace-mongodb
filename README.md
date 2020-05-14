@@ -263,8 +263,6 @@ RUN chmod u+x /home/aceuser/ace-server/config/connectors/loopback/add_tls_to_con
 RUN /home/aceuser/ace-server/config/connectors/loopback/add_tls_to_connector.sh
 ```
 
-Make sure the newly created shell script, certificate (rds-combined-ca-bundle.pem in this example), datasources.json and this Dockerfile are in the same folder.
-
 Edit your datasources.json folder and insert into the <> fields below with your credentials and details.
 
 ```
@@ -281,6 +279,8 @@ Edit your datasources.json folder and insert into the <> fields below with your 
 }
 ```
 
+Note - 
+Make sure the newly created shell script, certificate (rds-combined-ca-bundle.pem in this example), datasources.json and this Dockerfile are in the same folder before we proceed to the next step (building and deploying)
 
 
 #### 3.3 Build and Deploy Image
