@@ -231,11 +231,55 @@ COPY /datasources.json /home/aceuser/ace-server/config/connectors/loopback/
 
 #### 3.2 Datasource configuration with SSL
 
+For connections to a MongoDB instance that require a TLS certificate (such as AWS DocumentDB) upon login you will need to modify the above steps a little bit. You will as well need to create a shell script file. 
 
+```touch add_tls_to_connector.sh```
 
+We're going to use the below shell script to edit the Loopback MongoDB Connector source code to allow for the tls and the tlsCAFile options. By default the sslCA option requires a Buffer object that you can't provide in the datasources.json file. Whereas the tlsCAFile option can be used to provide a string filepath for your certificate. Paste the contents of the below script into the newly created add_tls_to_connector.sh file. 
 
+```
+awk '/const validOptionNames/{print;print "'\''tls'\'', '\''tlsCAFile'\'', ";next}1' \
+/var/mqsi/node_modules/loopback-connector-mongodb/lib/mongodb.js > \
+/var/mqsi/node_modules/loopback-connector-mongodb/lib/temp.js && \
+mv /var/mqsi/node_modules/loopback-connector-mongodb/lib/temp.js \
+/var/mqsi/node_modules/loopback-connector-mongodb/lib/mongodb.js
+```
 
+Make a new custom ACE image with the below Dockerfile. The new commands are to accomodate the need to edit the connector source code.
 
+```
+FROM ibmcom/ace:latest
+RUN . /opt/ibm/ace-11/server/bin/mqsiprofile
+ENV PATH "$PATH:/opt/ibm/ace-11/common/jdk/jre/bin:/var/mqsi/extensions/11.0.0/server/bin:/var/mqsi/extensions/11.0.0/bin:/opt/ibm/ace-11/server/bin/mosquitto:/opt/ibm/ace-11/server/bin:/opt/ibm/ace-11/common/node/bin:/opt/ibm/ace-11/tools"
+ENV MQSI_WORKPATH "/var/mqsi"
+WORKDIR /var/mqsi
+RUN npm install loopback-connector-mongodb --save
+WORKDIR /home
+COPY /datasources.json /home/aceuser/ace-server/config/connectors/loopback/
+COPY /rds-combined-ca-bundle.pem /home/aceuser/ace-server/config/connectors/loopback/
+COPY /add_tls_to_connector.sh /home/aceuser/ace-server/config/connectors/loopback/
+USER root
+RUN chmod u+x /home/aceuser/ace-server/config/connectors/loopback/add_tls_to_connector.sh
+RUN /home/aceuser/ace-server/config/connectors/loopback/add_tls_to_connector.sh
+```
+
+Make sure the newly created shell script, certificate (rds-combined-ca-bundle.pem in this example), datasources.json and this Dockerfile are in the same folder.
+
+Edit your datasources.json folder and insert into the <> fields below with your credentials and details.
+
+```
+{"mongodb" : {
+    "url":"mongodb://<username>:<password>@<mongodburl>:27017/sample_database?replicaSet=rs0&readPreference=secondaryPreferred",
+    "database": "sample_database",
+    "sslValidate":true,
+    "useNewUrlParser":true,
+    "name": "mongodb",
+    "connector": "mongodb",
+    "tls": true,
+    "tlsCAFile": "/home/aceuser/ace-server/config/connectors/loopback/rds-combined-ca-bundle.pem"
+    }
+}
+```
 
 
 
