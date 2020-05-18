@@ -268,7 +268,6 @@ Edit your datasources.json folder and insert into the <> fields below with your 
 ```
 {"mongodb" : {
     "url":"mongodb://<username>:<password>@<mongodburl>:27017/sample_database?replicaSet=rs0&readPreference=secondaryPreferred",
-    "database": "sample_database",
     "sslValidate":true,
     "useNewUrlParser":true,
     "name": "mongodb",
